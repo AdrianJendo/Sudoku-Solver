@@ -15,18 +15,82 @@
 
 .App-header {
   background-color: #282c34;
-  min-height: 100vh;
+  padding: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+  margin-bottom: 2rem;
 }
 
 .App-link {
   color: #61dafb;
 }
+
+
+.field {
+  width: 3rem;
+  height: 3rem;
+  font-size: 2rem;
+  border-width: 1.5px;
+  /*border: medium black currentColor;*/
+  text-align: center;
+  color: #888;
+  padding: 5px;
+}
+
+.top_left {
+  border-width: 3px 1.5px 1.5px 3px;
+}
+
+.top_mid {
+  border-width: 3px 1.5px 1.5px 1.5px;
+}
+
+.top_right {
+  border-width: 3px 1.5px 1.5px 1.5px;
+}
+
+.top_right_end {
+  border-width: 3px 3px 1.5px 1.5px;
+}
+
+.mid_left{
+  border-width: 1.5px 1.5px 1.5px 3px;
+}
+
+.mid_right_end {
+  border-width: 1.5px 3px 1.5px 1.5px;
+}
+
+.bottom_left {
+  border-width: 1.5px 1.5px 3px 3px;
+}
+
+.bottom_mid {
+  border-width: 1.5px 1.5px 3px 1.5px;
+}
+
+.bottom_right {
+  border-width: 1.5px 1.5px 3px 1.5px;
+}
+
+.bottom_right_end {
+  border-width: 1.5px 3px 3px 1.5px;
+}
+
+.field[readonly] {
+  color:#222;
+  /*border-width: 1.5px 1.5px 1.5px 1.5px;*/
+}
+
+.solve_sudoku{
+  margin-top: 15px;
+}
+
+
 
 @keyframes App-logo-spin {
   from {
