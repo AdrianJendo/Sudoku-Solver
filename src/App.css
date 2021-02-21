@@ -14,7 +14,7 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: #008CBA;
   padding: 2rem;
   display: flex;
   flex-direction: column;
@@ -87,16 +87,39 @@
 }
 
 .solve_sudoku{
-  margin-top: 15px;
+  margin-top: 5px;
 }
 
+.button{
+  background-color: #008CBA; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  min-width: 100px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+  transition-duration: 0.4s;
+  border: 1px solid #008CBA;
+}
 
+.button:hover {
+  background-color: white; /* Green */
+  color: #008CBA;
+  border: 1px solid #008CBA;
+  cursor: pointer;
+}
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.input-file {
+  width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+.grid-options {
+  margin-bottom : "5px";
 }

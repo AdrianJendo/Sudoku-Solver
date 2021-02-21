@@ -2,44 +2,77 @@ import React, { useEffect, useState } from 'react';
 
 export function Timer(props) {
 
-    const [elapsed, setElapsed] = useState(0);
-    const [isActive, setIsActive] = useState(false);
+    const [timeInfo, setTimeInfo] = useState({timerStart:new Date(), prevPause: 0, elapsed: 0, isActive: false})
+    //const [timerStart, setTimerStart] = useState(new Date());
+    //const [prevPause, setPrevPause] = useState(0);
+    //const [elapsed, setElapsed] = useState(0);
+    //const [isActive, setIsActive] = useState(false);
 
-    function toggle() {
-        setIsActive(!isActive);
-      }
-    
-      function reset() {
-        setElapsed(0);
-        setIsActive(false);
-      }
+    const {time, updateTime} = props;
+
+    const toggle = () => {
+        let temp = timeInfo.isActive
+        //setIsActive(!temp);
+        setTimeInfo(prevState => {return {...prevState, isActive:!temp}});
+        //timeInfo.isActive = !temp;
+        if(temp){
+            let time = (new Date() - timeInfo.timerStart + timeInfo.prevPause);
+            let time2 = Math.floor(time/1000);
+            setTimeInfo(prevState => {return{...prevState, prevPause:time, elapsed:time2}});
+            //setPrevPause(time);
+            //setElapsed(elapsed => time2);
+            updateTime(time2);
+        }
+        else{
+            //setTimerStart(new Date());
+            setTimeInfo(prevState => {return{...prevState, timerStart: new Date()}});
+        }
+    }
+
+    const reset = () => {
+        //setElapsed(0);
+        //setPrevPause(0);
+        //setIsActive(false);
+        setTimeInfo(prevState => {return{...prevState, elapsed:0, prevPause:0, isActive:false}});
+        updateTime(0);
+    }
 
     useEffect( () => {
         let interval = null;
-        if(isActive) {
+        if(timeInfo.isActive) {
             interval = setInterval( () => {
-                setElapsed(elapsed => elapsed + 1);
-                console.log(props.time)
-            }, 1000);
+                let time = Math.floor((new Date() - timeInfo.timerStart + timeInfo.prevPause)/1000);
+                //setElapsed(elapsed => time);
+                setTimeInfo(prevState => {return{...prevState, elapsed:time}});
+                updateTime(time);
+            }, 10);
         }
-        else if (!isActive && elapsed !==0){
+        else if (!timeInfo.isActive && timeInfo.elapsed !==0){
             clearInterval(interval);
         }
         return () => clearInterval(interval)
-    }, [isActive, elapsed, props]);
+    }, [time, updateTime, timeInfo]);
 
 
-
+    const resetStyle = {
+        opacity: timeInfo.elapsed === 0 ? '0.6' : '1', 
+        cursor: timeInfo.elapsed === 0 ? 'not-allowed' : 'pointer'
+    };
+    
     return (
         <div>
-            <h2>Time: {elapsed} </h2>
-            <div className="row">
-                <button className={`button button-primary button-primary-${isActive ? 'active' : 'inactive'}`} onClick={toggle}>
-                {isActive ? 'Pause' : 'Start'}
+            <h2>Time: {timeInfo.elapsed}s </h2>
+            <div className="row" style = {{marginBottom: "5px"}}>
+                <button className={`button button-primary button-primary-${timeInfo.isActive ? 'active' : 'inactive'}`} onClick={toggle}>
+                    {timeInfo.isActive ? 'Pause' : 'Start'}
                 </button>
-                <button className="button" onClick={reset}>
-                Reset
+
+                &nbsp;&nbsp;&nbsp;
+
+                <button className="button" style = {resetStyle} onClick={reset}>
+                    Reset
                 </button>
+
             </div>
         </div>
     );
