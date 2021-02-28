@@ -10,7 +10,7 @@ export function SudokuBoard(props) {
     //cannot render objects... must break down to smallest components
     return (
         <div>
-            {!sudoku.solved && <Timer time = {sudoku.time} updateTime = {updateTime} />}
+            {!sudoku.solved && updateTime && <Timer time = {sudoku.time} updateTime = {updateTime} />}
             {sudoku.solved && <Result sudoku = {sudoku} resetBoard = {resetBoard} />}
             
             {sudoku.length !== 0 && sudoku.rows && sudoku.rows.map(row => (

@@ -33,6 +33,7 @@ export function Timer(props) {
         //setElapsed(0);
         //setPrevPause(0);
         //setIsActive(false);
+        console.log('clicked')
         setTimeInfo(prevState => {return{...prevState, elapsed:0, prevPause:0, isActive:false}});
         updateTime(0);
     }
@@ -54,10 +55,12 @@ export function Timer(props) {
     }, [time, updateTime, timeInfo]);
 
 
+    /*
     const resetStyle = {
         opacity: timeInfo.elapsed === 0 ? '0.6' : '1', 
         cursor: timeInfo.elapsed === 0 ? 'not-allowed' : 'pointer'
     };
+    */
     
     return (
         <div>
@@ -69,9 +72,11 @@ export function Timer(props) {
 
                 &nbsp;&nbsp;&nbsp;
 
-                <button className="button" style = {resetStyle} onClick={reset}>
-                    Reset
-                </button>
+                <span className={timeInfo.elapsed===0 ? 'not-allowed' : ''}>
+                    <button className={timeInfo.elapsed===0 ? 'button unclickable' : 'button'} onClick={reset}>
+                        Reset
+                    </button>
+                </span>
 
             </div>
         </div>

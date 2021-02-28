@@ -51,7 +51,9 @@ function isError(solution, row, col) {
   
 export function solveSudoku(grid) {
     //copy of original grid to do solution
+    let start = new Date();
     let solution = deepCopy(grid);
+    
 
     //variable stuff
     let count = 0;
@@ -62,6 +64,11 @@ export function solveSudoku(grid) {
         if (count === -1){
             console.log('Sudoku not solvable');
             //break;
+            return null;
+        }
+
+        if ((new Date() - start)/1000 > 7){
+            alert('Timeout');
             return null;
         }
 
@@ -93,4 +100,3 @@ export function solveSudoku(grid) {
     //console.log(solution)
     return solution;
 }
-  

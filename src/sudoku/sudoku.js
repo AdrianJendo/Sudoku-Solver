@@ -1,7 +1,45 @@
 import {solveSudoku} from '../components/SudokuSolver'
 
-export function generateSudoku(text) {
+export function create_grid(grid, userGenerated, solution = null) {
+  const result = { 
+    rows: [], 
+    solution : !userGenerated ? solveSudoku(grid) : solution ? solution : null,
+    time: 0,
+    solved: false,
+    solveByAlgo: false
+  };
 
+  for (let i=0; i<9; ++i){
+    const row = { cols : [], index : i}
+    for(let j=0; j<9; ++j){
+      const value = grid[i][j];
+      const col = {
+        row: i,
+        col: j,
+        value: value,
+        readonly: (!userGenerated || solution) && value !== 0,
+
+        top_left : i%3===0 && j%3===0,
+        top_mid : i%3===0 && j%3===1,
+        top_right : i%3===0 && j%3===2 && j!==8,
+        top_right_end: i%3===0 && j===8,
+
+        mid_left : (i%3===1 && j%3===0) || (i%3===2 && j%3===0 && i!==8),
+        mid_right_end : (i%3===1 && j===8) || (i%3===2 && j===8 && i!==8),
+
+        bottom_left : i===8 && j%3===0,
+        bottom_mid : i===8 && j%3===1,
+        bottom_right : i===8 && j%3===2 && j!==8,
+        bottom_right_end : i===8 && j===8,
+      };
+      row.cols.push(col);
+    }
+    result.rows.push(row);
+  }
+  return result;
+}
+
+export function generateSudoku(text, userGenerated = false) {
 
   let temp_grid = String(text).replace(/(\r\n|\n|\r)/gm, "").split(" ").filter(el => el !== "");
   temp_grid = temp_grid.length === 81 ? temp_grid : String(text).replace(/(\r\n|\n|\r)/gm, "").split("").filter(el => el !== "");
@@ -22,42 +60,8 @@ export function generateSudoku(text) {
       [ 0, 2, 0, 0, 7, 0, 0, 9, 0 ],
       [ 6, 0, 0, 0, 0, 4, 3, 0, 0 ],
     ];*/
-    const result = { 
-      rows: [], 
-      solution : solveSudoku(grid),
-      time: 0,
-      solved: false,
-      solveByAlgo: false
-    };
-  
-    for (let i=0; i<9; ++i){
-      const row = { cols : [], index : i}
-      for(let j=0; j<9; ++j){
-        const value = grid[i][j];
-        const col = {
-          row: i,
-          col: j,
-          value: value,
-          readonly: value !== 0,
-  
-          top_left : i%3===0 && j%3===0,
-          top_mid : i%3===0 && j%3===1,
-          top_right : i%3===0 && j%3===2 && j!==8,
-          top_right_end: i%3===0 && j===8,
-  
-          mid_left : (i%3===1 && j%3===0) || (i%3===2 && j%3===0 && i!==8),
-          mid_right_end : (i%3===1 && j===8) || (i%3===2 && j===8 && i!==8),
-  
-          bottom_left : i===8 && j%3===0,
-          bottom_mid : i===8 && j%3===1,
-          bottom_right : i===8 && j%3===2 && j!==8,
-          bottom_right_end : i===8 && j===8,
-        };
-        row.cols.push(col);
-      }
-      result.rows.push(row);
-    }
-    return result;
+    
+    return create_grid(grid, userGenerated);
   }
   
   return false;

@@ -123,3 +123,12 @@
 .grid-options {
   margin-bottom : "5px";
 }
+
+.not-allowed {
+  cursor: not-allowed !important;
+}
+
+.unclickable {
+  opacity: 0.6; 
+  pointer-events: none;
+}
