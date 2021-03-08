@@ -13,11 +13,16 @@ export function create_grid(grid, userGenerated, solution = null) {
     const row = { cols : [], index : i}
     for(let j=0; j<9; ++j){
       const value = grid[i][j];
+      const readonly = (!userGenerated || solution) && value !== 0;
       const col = {
         row: i,
         col: j,
         value: value,
-        readonly: (!userGenerated || solution) && value !== 0,
+        readonly: readonly,
+        
+        given : readonly,
+        correct : false,
+        zero : false,
 
         top_left : i%3===0 && j%3===0,
         top_mid : i%3===0 && j%3===1,

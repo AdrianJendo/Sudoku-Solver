@@ -10,8 +10,9 @@ export function GridOptions(props) {
         handleReset,
         handleUserGrid,
         userSudoku,
-        userSudokuSolvable} = props;
-
+        userSudokuSolvable,
+        MIN_GRID_VALUES,
+        count} = props;
 
     return (
         <div className = 'grid-options'>
@@ -25,7 +26,8 @@ export function GridOptions(props) {
                 {selectedFile === null && <button className="button" onClick = {() => handleUserGrid('create')}> Create Grid </button>}
             </div>}
             {!reset && <button className='button' onClick = {handleReset}>New Grid</button>}
-            {userSudoku && <div style = {{padding: '15px 32px'}}>
+            {userSudoku && <div style = {{marginBottom: '15px'}}>
+                {count < MIN_GRID_VALUES ? <h2>Add More Values</h2> : !userSudokuSolvable ? <h2>Invalid Sudoku Grid</h2>: ""}
                 <button className="button" onClick = {handleReset}> Back to Options </button>
                 &nbsp;&nbsp;&nbsp;
                 <button className="button" onClick = {() => handleUserGrid('reset')}> Reset Board </button>

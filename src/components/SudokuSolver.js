@@ -62,7 +62,8 @@ export function solveSudoku(grid) {
     
     while(count<(boardsize*boardsize)){
         if (count === -1){
-            console.log('Sudoku not solvable');
+            //alert('Sudoku not solvable')
+            //console.log('Sudoku not solvable');
             //break;
             return null;
         }
@@ -97,6 +98,5 @@ export function solveSudoku(grid) {
         }
     }
 
-    //console.log(solution)
     return solution;
 }

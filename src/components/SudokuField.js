@@ -7,7 +7,9 @@ function handleChange(e, field, onChange) {
 };
 
 export function SudokuField(props) {
-    const {field, onChange} = props;
+    const {field, solved, onChange} = props;
+
+    const style = field.given ? {color:'#222'} : solved ? field.zero ? {color:"#008CBA"} : field.correct ? {color:'#008000'} : {color:'#FF0000'} : {};
 
     if(field.top_left){
         return (
@@ -16,6 +18,7 @@ export function SudokuField(props) {
                 //maxLength = '1'
                 value = {field.value || ""} 
                 readOnly={field.readonly}
+                style = {style}
                 onChange={(e) => handleChange(e, field, onChange)}
             />
         )
@@ -27,6 +30,7 @@ export function SudokuField(props) {
                 //maxLength = '1'
                 value = {field.value || ""} 
                 readOnly={field.readonly}
+                style = {style}
                 onChange={(e) => handleChange(e, field, onChange)}
             />
         )
@@ -38,6 +42,7 @@ export function SudokuField(props) {
                 //maxLength = '1'
                 value = {field.value || ""} 
                 readOnly={field.readonly}
+                style = {style}
                 onChange={(e) => handleChange(e, field, onChange)}
             />
         )
@@ -49,6 +54,7 @@ export function SudokuField(props) {
                 //maxLength = '1'
                 value = {field.value || ""} 
                 readOnly={field.readonly}
+                style = {style}
                 onChange={(e) => handleChange(e, field, onChange)}
             />
         )
@@ -60,6 +66,7 @@ export function SudokuField(props) {
                 //maxLength = '1'
                 value = {field.value || ""} 
                 readOnly={field.readonly}
+                style = {style}
                 onChange={(e) => handleChange(e, field, onChange)}
             />
         )
@@ -71,6 +78,7 @@ export function SudokuField(props) {
                 //maxLength = '1'
                 value = {field.value || ""} 
                 readOnly={field.readonly}
+                style = {style}
                 onChange={(e) => handleChange(e, field, onChange)}
             />
         )
@@ -82,6 +90,7 @@ export function SudokuField(props) {
                 //maxLength = '1'
                 value = {field.value || ""} 
                 readOnly={field.readonly}
+                style = {style}
                 onChange={(e) => handleChange(e, field, onChange)}
             />
         )
@@ -93,6 +102,7 @@ export function SudokuField(props) {
                 //maxLength = '1'
                 value = {field.value || ""} 
                 readOnly={field.readonly}
+                style = {style}
                 onChange={(e) => handleChange(e, field, onChange)}
             />
         )
@@ -104,6 +114,7 @@ export function SudokuField(props) {
                 //maxLength = '1'
                 value = {field.value || ""} 
                 readOnly={field.readonly}
+                style = {style}
                 onChange={(e) => handleChange(e, field, onChange)}
             />
         )
@@ -115,6 +126,7 @@ export function SudokuField(props) {
                 //maxLength = '1'
                 value = {field.value || ""} 
                 readOnly={field.readonly}
+                style = {style}
                 onChange={(e) => handleChange(e, field, onChange)}
             />
         )
@@ -125,6 +137,7 @@ export function SudokuField(props) {
             //maxLength = '1'
             value = {field.value || ""} 
             readOnly={field.readonly}
+            style = {style}
             onChange={(e) => handleChange(e, field, onChange)}
         />
     );

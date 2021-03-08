@@ -1,5 +1,3 @@
-1. After each addition to user sudoku board, check if sudoku is solvable. If solvable, tell the user that this grid is solvable
-^Look for start/end in app.js
-2. When user clicks upload, sudoku board is created. If sudoku is not solvable, the upload button is not clickable.
-3. Format buttons over user sudoku grid
-4. Timer with normal variables instead of using state (since i dont render them anyways)
+1. Create an message for user create sudoku (tell user to either add more entries or that the soduku is not solvable) (done)
+2. Make sure sudoku is solved when you solve the sudoku (from file upload and also from user created grid) -- make sure to record for github <- need to record
+3. When the sudoku is solved (or you press 'solution', correct user entries are highlighted in green, bad ones in red)

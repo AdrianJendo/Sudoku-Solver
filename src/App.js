@@ -11,10 +11,10 @@ const MIN_GRID_VALUES = 17;
 function App() {
 
   const grid = useRef([]);
+  const userSudokuValues = useRef(0);
   const [sudoku, setSudoku] = useState([]);
   const [userSudoku, setUserSudoku] = useState([]);
   const [userSudokuSolution, setUserSudokuSolution] = useState([]);
-  const [userSudokuValues, setUserSudokuValues] = useState(0);
   const [reset, setReset] = useState(true);
   const [selectedFile, setSelectedFile] = useState(null);
   const [fileUploaded, setFileUploaded] = useState(false);
@@ -25,6 +25,7 @@ function App() {
   }, []);
   */
 
+  //Keep updating the time in case the sudoku gets solved
   const updateTime = (elapsed) => {
     //We can use this approach since time is not nested in the state object
     setSudoku(prevState => {
@@ -37,7 +38,6 @@ function App() {
       setSudoku(generateSudoku(selectedFile));
     }
     else if (userSudokuSolution && grid){
-      console.log(grid, userSudokuSolution);
       setSudoku(create_grid(grid.current, true, userSudokuSolution));
     }
     else{
@@ -55,20 +55,33 @@ function App() {
       ...prevState,     //copy all other fields/objects
       sudoku: {         //recreate the object that contains the field to update
         ...prevState.sudoku,  //copy all the fields of the object
-        value: prevState.rows[e.row].cols[e.col].value = e.value //overwrite the value of the field to update
+        value: prevState.rows[e.row].cols[e.col].value = e.value, //overwrite the value of the field to update
         //This is a cheeky way to update the state. "...prevState.sudoku" copies the previous state of sudoku
         //and assignment operator : "prevState.rows[e.row].cols[e.col].value = e.value" updates the vaue we want in state 
         //-> this is the reason that console.log(sudoku) at the bottom will display the updated sudoku. (notice how the 'value:' field is one iteration behind)
-        //Creating the value field is a bi-product of updating state this way
+        //Creating a new 'value' field is a bi-product of updating state this way
+
       }
     }));
     if(!sudoku.solved){
       const solved = checkSolution(sudoku, e);
       if (solved){
-        setSudoku(prevState => {return{...prevState, solved:true}})
+        setSudoku(prevState => ({
+          ...prevState,
+          solved:true,
+          sudoku: {
+            ...prevState.sudoku,
+            value: prevState.rows.forEach((row) => row.cols.forEach((col) => {
+              if(col.readonly === false) {
+                col.readonly=true;
+                col.correct = true;
+              }
+            }))
+          }
+        }));          
       }
     }
-    console.log(sudoku)
+    
   }
 
 
@@ -93,6 +106,7 @@ function App() {
         e_col : e.col
       }
     }));
+
   }
 
   useEffect(() => {
@@ -102,29 +116,28 @@ function App() {
       grid.current[userSudoku.event.e_row][userSudoku.event.e_col] = userSudoku.event.value;
       if(updateCount){
         if(userSudoku.event.value !== 0){
-          setUserSudokuValues(u => u+1);
+          userSudokuValues.current += 1;
         }
         else{
-          setUserSudokuValues(u => u-1);
+          userSudokuValues.current -= 1;
         }
       }
-    }
-  }, [userSudoku]);
 
-  useEffect(() => {
-    if(userSudokuValues >= MIN_GRID_VALUES){
-      let solution = solveSudoku(grid.current);
-      if(solution){
-        setUserSudokuSolution(solution);
+      if(userSudokuValues.current >= MIN_GRID_VALUES){
+        let solution = solveSudoku(grid.current);
+        if(solution){
+          setUserSudokuSolution(solution);
+        }
+        else{
+          setUserSudokuSolution([]);
+        } 
       }
       else{
         setUserSudokuSolution([]);
       } 
+      
     }
-    else{
-      setUserSudokuSolution([]);
-    } 
-  }, [userSudokuValues]);
+  }, [userSudoku]);
   
 
   const solveSudokuGrid = (e) => {
@@ -135,14 +148,20 @@ function App() {
           ...prevState.sudoku,
           value: prevState.rows.forEach((row) => row.cols.forEach((col) => {
             if(col.readonly === false) {
-              col.value = prevState.solution[col.row][col.col]
+              const temp = col.value;
+              col.value = prevState.solution[col.row][col.col];
+              col.readonly=true;
+              col.correct = prevState.solution[col.row][col.col] === temp;
+              col.zero = temp === 0;
             }
           }))
-        }
+        },
+        solved:true, 
+        solveByAlgo:true
       }))
-      if(!sudoku.solved){
-        setSudoku(prevState => {return{...prevState, solved:true, solveByAlgo:true}});
-      }
+      //if(!sudoku.solved){
+      //  setSudoku(prevState => {return{...prevState, solved: true, solveByAlgo:true}});
+      //}
     }
     else{
       setSudoku(prevState => ({
@@ -151,6 +170,7 @@ function App() {
           ...prevState.sudoku,
           value: prevState.rows.forEach((row) => row.cols.forEach((col) => {
             col.value = -1
+            col.correct = false;
           }))
         }
       }))
@@ -189,7 +209,7 @@ function App() {
     setSelectedFile(null);
     setFileUploaded(false);
     setUserSudoku([]);
-    setUserSudokuValues(0);
+    userSudokuValues.current = 0;
     setUserSudokuSolution([]);
   }
 
@@ -198,10 +218,9 @@ function App() {
       const temp_grid = '0'.repeat(81); //Create an array of 0s so that the user can insert the values they want
       const sudoku = generateSudoku(temp_grid, true);
       setUserSudoku(sudoku);
-      setUserSudokuValues(0);
+      userSudokuValues.current = 0;
     }
     else if (input === 'upload'){
-      console.log(grid, userSudokuSolution);
       setSudoku(create_grid(grid.current, true, userSudokuSolution));
       setFileUploaded(true);
       setReset(false);
@@ -225,8 +244,10 @@ function App() {
         handleUserGrid = {handleUserGrid}
         userSudoku = {userSudoku.length !== 0}
         userSudokuSolvable = {userSudokuSolution.length !== 0}
+        MIN_GRID_VALUES = {MIN_GRID_VALUES}
+        count = {userSudokuValues.current}
       />
-      {userSudoku.length !== 0 && <SudokuBoard sudoku = {userSudoku} onChange = {handleUserChange} userSudoku = {true}/>}
+      {userSudoku.length !== 0 && <SudokuBoard sudoku = {userSudoku} onChange = {handleUserChange}/>}
       {(selectedFile !== null || userSudokuSolution) && fileUploaded && <SudokuBoard sudoku = {sudoku} onChange={handleChange} updateTime={updateTime} resetBoard = {resetBoard}/>} 
       {(selectedFile !== null || userSudokuSolution) && fileUploaded && !sudoku.solved && <button className='solve_sudoku button' onClick={solveSudokuGrid}>Solve</button>}
     </div>

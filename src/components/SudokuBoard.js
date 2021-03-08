@@ -16,7 +16,7 @@ export function SudokuBoard(props) {
             {sudoku.length !== 0 && sudoku.rows && sudoku.rows.map(row => (
                     <div className = 'row' key = {row.index}>
                         {row.cols.map(field => (
-                            <SudokuField field = {field} key={field.col} onChange = {onChange}/>
+                            <SudokuField field = {field} key={field.col} solved={sudoku.solved} onChange = {onChange}/>
                         ))}
                     </div>
                 )

@@ -81,10 +81,10 @@
   border-width: 1.5px 3px 3px 1.5px;
 }
 
-.field[readonly] {
+/*.field[readonly] {
   color:#222;
-  /*border-width: 1.5px 1.5px 1.5px 1.5px;*/
-}
+  /*border-width: 1.5px 1.5px 1.5px 1.5px;
+}*/
 
 .solve_sudoku{
   margin-top: 5px;
