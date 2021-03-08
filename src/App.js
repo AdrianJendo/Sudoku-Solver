@@ -17,6 +17,7 @@ function App() {
   const [userSudokuSolution, setUserSudokuSolution] = useState([]);
   const [reset, setReset] = useState(true);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [fileName, setFileName] = useState(null);
   const [fileUploaded, setFileUploaded] = useState(false);
 
   /*
@@ -166,11 +167,13 @@ function App() {
     else{
       setSudoku(prevState => ({
         ...prevState,
+        solved:true,
         sudoku: {
           ...prevState.sudoku,
           value: prevState.rows.forEach((row) => row.cols.forEach((col) => {
             col.value = -1
             col.correct = false;
+            col.readonly = true;
           }))
         }
       }))
@@ -182,6 +185,7 @@ function App() {
     let fileReader = new FileReader();
     try{
       fileReader.readAsText(file);
+      setFileName(file.name);
     }
     catch{}
     fileReader.onloadend = (e) => {
@@ -207,6 +211,7 @@ function App() {
   const handleUserReset = () => {
     setReset(true);
     setSelectedFile(null);
+    setFileName(null);
     setFileUploaded(false);
     setUserSudoku([]);
     userSudokuValues.current = 0;
@@ -230,13 +235,14 @@ function App() {
 
   return (
     <div className="App" style = {{marginBottom : "60px"}}>
-      <header className="App-header">
-        
-        {sudoku.solution !== null ? <h1>Sudoku Solver</h1> :<h1>Not Solvable</h1>  }
-      </header>
+      <header className={!fileUploaded || !(sudoku.solution === null && selectedFile) ? "App-header" : "App-header fail"}>
+        {!fileUploaded || !(sudoku.solution === null && selectedFile) ? <h1>Sudoku Solver</h1> :<h1>Not Solvable</h1>  }
+      </header> 
+      
       <GridOptions 
         fileUploadHandler = {fileUploadHandler} 
         selectedFile = {selectedFile} 
+        fileName = {fileName}
         fileUploaded = {fileUploaded} 
         onClickHandler={onClickHandler}
         reset = {reset}
@@ -249,7 +255,11 @@ function App() {
       />
       {userSudoku.length !== 0 && <SudokuBoard sudoku = {userSudoku} onChange = {handleUserChange}/>}
       {(selectedFile !== null || userSudokuSolution) && fileUploaded && <SudokuBoard sudoku = {sudoku} onChange={handleChange} updateTime={updateTime} resetBoard = {resetBoard}/>} 
-      {(selectedFile !== null || userSudokuSolution) && fileUploaded && !sudoku.solved && <button className='solve_sudoku button' onClick={solveSudokuGrid}>Solve</button>}
+      <span className={sudoku.solution === null ? 'not-allowed' : ''}>
+        {(selectedFile !== null || userSudokuSolution) && fileUploaded && !sudoku.solved && 
+          <button className={sudoku.solution === null ? 'solve_sudoku button unclickable' : 'solve_sudoku button'} onClick={solveSudokuGrid}>Solve</button>
+        }         
+      </span>
     </div>
   );
 }

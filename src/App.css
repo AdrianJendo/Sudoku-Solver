@@ -25,10 +25,14 @@
   margin-bottom: 2rem;
 }
 
+.fail {
+  background-color: red;
+}
+
+
 .App-link {
   color: #61dafb;
 }
-
 
 .field {
   width: 3rem;

@@ -4,6 +4,7 @@ export function GridOptions(props) {
     
     const {fileUploadHandler, 
         selectedFile, 
+        fileName,
         fileUploaded, 
         onClickHandler,
         reset,
@@ -19,12 +20,11 @@ export function GridOptions(props) {
             {reset && !userSudoku && <div>
                 <input type="file" className = "input-file" id="file" accept = ".txt" onChange={fileUploadHandler}/>
                 <label className = "button" htmlFor="file">Upload a sudoku grid</label>
-
                 &nbsp;&nbsp;&nbsp;
-
                 {selectedFile !== null && !fileUploaded && <button type="button" className="button" onClick={onClickHandler}>Upload</button>}
                 {selectedFile === null && <button className="button" onClick = {() => handleUserGrid('create')}> Create Grid </button>}
             </div>}
+            {fileName && !fileUploaded && <p style = {{display:'inline-block'}}>{fileName}</p> }
             {!reset && <button className='button' onClick = {handleReset}>New Grid</button>}
             {userSudoku && <div style = {{marginBottom: '15px'}}>
                 {count < MIN_GRID_VALUES ? <h2>Add More Values</h2> : !userSudokuSolvable ? <h2>Invalid Sudoku Grid</h2>: ""}
