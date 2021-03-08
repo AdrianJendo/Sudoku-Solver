@@ -45,9 +45,8 @@ export function create_grid(grid, userGenerated, solution = null) {
 }
 
 export function generateSudoku(text, userGenerated = false) {
-
-  let temp_grid = String(text).replace(/(\r\n|\n|\r)/gm, "").split(" ").filter(el => el !== "");
-  temp_grid = temp_grid.length === 81 ? temp_grid : String(text).replace(/(\r\n|\n|\r)/gm, "").split("").filter(el => el !== "");
+  
+  let temp_grid = String(text).replace(/\s/g, '').split(""); //splits elements by space
   temp_grid = temp_grid.map(el => parseInt(el));
   
   if (temp_grid.length === 81 && temp_grid.every(el => el < 10 && el >= 0)){    
