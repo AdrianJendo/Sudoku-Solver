@@ -1,3 +1,4 @@
+//Create deep copy of n-dimensional array (recursively call function to ensure this)
 const deepCopy = (arr) => {
     let copy = [];
     arr.forEach(elem => {
@@ -10,10 +11,11 @@ const deepCopy = (arr) => {
     return copy;
 }
 
+//Check if current grid (param solution) has no errors based on the value at row,col
 function isError(solution, row, col) {
-    let unavailable = new Array(solution[0].length+1).fill(false); //declare length plus 1 since possible sudoku values are 1-9
+    let unavailable = new Array(solution[0].length+1).fill(false); //declare as length plus 1 since possible sudoku values are 1-9 (ignore 0 index)
 
-    //handle left-right check
+    //handle left-right check (traverse the columns of the row)
     for (let i=0;i<solution[0].length;i++) {
         if (unavailable[solution[row][i]] && solution[row][i]!==0) {//while traversing, if there is a value that is repeated (other than 0)...
             return true; //return true (meaning that there is an error)
@@ -23,7 +25,7 @@ function isError(solution, row, col) {
     
     unavailable = new Array(solution[0].length+1).fill(false); 
     
-    //handle up-down check
+    //handle up-down check (traverse rows of the column)
     for (let i=0; i<solution.length; i++) { 
         if (unavailable[solution[i][col]] && solution[i][col]!==0){ //if a non-zero value is repeated...
             return true; //return true (error)
@@ -34,7 +36,7 @@ function isError(solution, row, col) {
     unavailable = new Array(solution[0].length+1).fill(false);
     
     //check 3x3 boxees
-    let topleftx = Math.floor(col/3)*3; //clever integer division to always start at top left corner of 3x3 square
+    let topleftx = Math.floor(col/3)*3; //utilize flooring to always start at top left corner of each 3x3 square of the grid
     let toplefty = Math.floor(row/3)*3;
     for (let i = 0; i<3; i++) {
         for (let j = 0; j<3; j++) { //nested for to traverse the 3x3 square and check for error
@@ -48,35 +50,39 @@ function isError(solution, row, col) {
     return false; //if everything is satisfied and there is no error, return false.
 }
 
-  
+//Brute force sudoku solver. 
+//Iterate through grid and increment each position until an error is found
+//Backtrack to try different values for previous grid positions until error is fixed
 export function solveSudoku(grid) {
-    //copy of original grid to do solution
     let start = new Date();
+    //copy of original grid to do solution
     let solution = deepCopy(grid);
     
-
-    //variable stuff
+    //variable initialization
     let count = 0;
-    let countdir = 1; //this one determines direction to check (so if there is an error you start moving back and not forward
-    let boardsize = grid.length;
+    let countdir = 1; //determines direction to move when iterating (so if there is an error you start moving back and not forward)
+    let boardsize = grid.length; 
     
+    //while end of board not yet reached
     while(count<(boardsize*boardsize)){
+        //Sudoku not solvable if iterator moves before the first position
         if (count === -1){
             //alert('Sudoku not solvable')
-            //console.log('Sudoku not solvable');
             //break;
             return null;
         }
 
+        //Timeout if sudoku takes too long to solve (7 seconds)
         if ((new Date() - start)/1000 > 7){
             alert('Timeout');
             return null;
         }
 
-        //determines position of board
+        //determines row,col position on board
         let row = Math.floor(count/boardsize);
         let col = count%boardsize;
 
+        //Increment/decrement count if current space is occupied (skipping over the preset values of the grid)
         if(grid[row][col] !== 0 && countdir === 1){
             count++;
         }
@@ -89,12 +95,13 @@ export function solveSudoku(grid) {
             if(solution[row][col] > boardsize){ // if the value is greater than boardsize (9) then one of the previous values must be wrong so...
                 solution[row][col] = 0; // we reset it to 0...
                 count--; // ...move one index back on the board...
-                countdir = -1; // ... and we set countdir to -1 so we move backwards (and skip over preset values in the correct direction)
+                countdir = -1; // ... and we set countdir to -1 to start incrementing backwards 
             }
             else if(!isError(solution, row, col)){ //method checks to see if the value is valid on the solution board
                 count++; // if there is no error, then we can move onto the next index...
                 countdir = 1; // and make sure countdir is 1 so we move in the right direction
             }
+            //The current row,col has an error, keep incrementing the current position until it exceeds 9
         }
     }
 

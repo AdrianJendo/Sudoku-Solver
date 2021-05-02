@@ -1,5 +1,6 @@
 import {solveSudoku} from '../components/SudokuSolver'
 
+//Creates sudoku grid (2d array structure to handle logic). Parameters allow to pass in a premade solution as well as boolean for usergenerated
 export function create_grid(grid, userGenerated, solution = null) {
   const result = { 
     rows: [], 
@@ -9,6 +10,7 @@ export function create_grid(grid, userGenerated, solution = null) {
     solveByAlgo: false
   };
 
+  //Create 9x9 grid and pass grid values into results[rows]
   for (let i=0; i<9; ++i){
     const row = { cols : [], index : i}
     for(let j=0; j<9; ++j){
@@ -20,7 +22,7 @@ export function create_grid(grid, userGenerated, solution = null) {
         value: value,
         readonly: readonly,
         
-        given : readonly,
+        given : readonly, //want to initialize given and readOnly separately because readonly will get updated when sudoku is solved
         correct : false,
         zero : false,
 
@@ -44,6 +46,7 @@ export function create_grid(grid, userGenerated, solution = null) {
   return result;
 }
 
+//Takes string (from text file) and converts to 2d grid to pass into create sudoku grid function
 export function generateSudoku(text, userGenerated = false) {
   
   let temp_grid = String(text).replace(/\s/g, '').split(""); //splits elements by space
@@ -71,6 +74,7 @@ export function generateSudoku(text, userGenerated = false) {
   return false;
 }
 
+//Check if current state of sudoku matches solution
 export function checkSolution(sudoku, e) {
   let candidate = sudoku.rows.map((row) => row.cols.map((col) => col.value));
   candidate[e.row][e.col] = e.value;

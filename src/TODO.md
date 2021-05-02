@@ -1,3 +1,0 @@
-1. Create an message for user create sudoku (tell user to either add more entries or that the soduku is not solvable) (done)
-2. Make sure sudoku is solved when you solve the sudoku (from file upload and also from user created grid) -- make sure to record for github <- need to record
-3. When the sudoku is solved (or you press 'solution', correct user entries are highlighted in green, bad ones in red)

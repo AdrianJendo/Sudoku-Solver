@@ -1,16 +1,20 @@
 import React from 'react';
 
+//Pass value down to handle change function
 function handleChange(e, field, onChange) {
     const temp = e.target.value.length;
-    const value = e.value === "" ? null : parseInt(e.target.value[temp-1], 10);
+    const value = e.value === "" ? null : parseInt(e.target.value[temp-1], 10); //Only gets the 1 integer value so no need to worry about maxlength
     onChange({...field, value : value});
 };
 
+//Format the grid fields 
 export function SudokuField(props) {
     const {field, solved, onChange} = props;
 
-    const style = field.given ? {color:'#222'} : solved ? field.zero ? {color:"#008CBA"} : field.correct ? {color:'#32CD32'} : {color:'#FF0000'} : {};
+    //style by if field is given, sudoku is solved, and field is correct
+    const style = field.given ? {color:'#222'} : solved ? field.zero ? {color:"#008CBA"} : field.correct ? {color:'#32CD32'} : {color:'#FF0000'} : {}; 
 
+    //Add className to style bolded outlines on grid
     if(field.top_left){
         return (
             <input 

@@ -6,7 +6,6 @@ import {Result} from "./Result";
 export function SudokuBoard(props) {
     const {sudoku, onChange, updateTime, resetBoard} = props;
 
-    //console.log(sudoku.solvedTime)
     //cannot render objects... must break down to smallest components
     return (
         <div>

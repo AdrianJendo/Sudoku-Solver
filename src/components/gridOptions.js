@@ -18,6 +18,10 @@ export function GridOptions(props) {
     return (
         <div className = 'grid-options'>
             {reset && !userSudoku && <div>
+                {selectedFile !== null && !fileUploaded && <div style={{display:'inline'}}>
+                    <button className="button" onClick = {handleReset}> Back to Options </button> 
+                    &nbsp;&nbsp;&nbsp;
+                </div>}
                 <input type="file" className = "input-file" id="file" accept = ".txt" onChange={fileUploadHandler}/>
                 <label className = "button" htmlFor="file">Upload a sudoku grid</label>
                 &nbsp;&nbsp;&nbsp;
