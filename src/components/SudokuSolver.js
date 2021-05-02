@@ -1,4 +1,4 @@
-//Create deep copy of n-dimensional array (recursively call function to ensure this)
+//Create deep copy of n-dimensional array (recursively call function)
 const deepCopy = (arr) => {
     let copy = [];
     arr.forEach(elem => {
