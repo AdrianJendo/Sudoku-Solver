@@ -10,7 +10,12 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-scripts": "4.0.1",
-    "web-vitals": "^0.2.4"
+    "web-vitals": "^0.2.4",
+    "shell-quote": ">=1.7.3",
+    "eventsource": ">=1.1.1",
+    "ejs": ">=3.1.7",
+    "minimist": ">=1.2.6",
+    "immer": ">=9.0.6"
   },
   "scripts": {
     "start": "react-scripts start",
